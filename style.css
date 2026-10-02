@@ -62,7 +62,7 @@ body::before {
 .logo-container {
     position: relative; /* Logo scrolls with questions */
     text-align: center;
-    margin-bottom: 80px; /* Reduced from 120px — smaller gap between logo and Q1 */
+    margin-bottom: 10px; /* Reduced from 120px — smaller gap between logo and Q1 */
 }
 
 .logo-img {
@@ -238,7 +238,7 @@ body::before {
     }
     
     .logo-container {
-        margin-bottom: 60px; /* Slightly smaller gap on mobile */
+        margin-bottom: 20px; /* Slightly smaller gap on mobile */
     }
     
     .survey-container {
