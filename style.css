@@ -104,12 +104,9 @@ body::before {
    ======================================== */
 
 .logo-container {
-    position: fixed;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;           /* Stays above content */
+    position: relative;      /* CHANGED FROM: fixed */
     text-align: center;
+    margin-bottom: 20px;     /* Space above questions */
 }
 
 .logo-img {
