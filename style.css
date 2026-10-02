@@ -104,21 +104,41 @@ body::before {
    ======================================== */
 
 .logo-container {
-   position: fixed;
-   top: 60px;
-   left: 50%;
-   transform: translateX(-50%);
-   z-index: 999; /* Stays on top */
-   text-align: center;
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;           /* Stays above content */
+    text-align: center;
 }
 
-
-/* Logo image - Replace 'trovatino-logo.png' with your actual file */
 .logo-img {
-   max-width: 300px;
-   height: auto;
-   filter: drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.5)); /* Slight depth */
+    max-width: 280px;
+    height: auto;
 }
+
+/* Wrap survey container to prevent overlap */
+.survey-container {
+    max-width: 600px;
+    margin-top: 180px;       /* Space for fixed logo */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Main content area scrolls normally */
+main {
+    padding-bottom: 200px;   /* Space for progress bar/footer */
+}
+
+/* Ensure scrolling works properly */
+body,
+html {
+    overflow-x: hidden;      /* No horizontal scroll */
+    overflow-y: auto;        /* Vertical scroll enabled */
+}
+
 
 
 /* ========================================
