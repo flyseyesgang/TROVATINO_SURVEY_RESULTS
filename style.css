@@ -238,7 +238,7 @@ body::before {
     }
     
     .logo-container {
-        margin-bottom: 35px; /* Consistent spacing for all devices - reduced from 40px */
+        margin-bottom: 50px; /* Consistent spacing for all devices - reduced from 40px */
     }
     
     .survey-container {
