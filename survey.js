@@ -11,7 +11,6 @@ const surveyQuestions = [
     { type: 'text', question: "What is your age group?", placeholder: "e.g., 18-25, 26-35, etc." },
     { type: 'radio', question: "How did you hear about us?", options: ["Social Media", "Friend/Family", "Advertisement", "Other"] },
     { type: 'text', question: "What is one thing we do well?", placeholder: "Tell us what we're doing right!" },
-    // 👇 NEW 10TH QUESTION ADDED HERE:
     { type: 'radio', question: "Hi Amelia, I wrote this from my bedroom :)", options: ["Hi Vince", "Select Hi Vince"] }
 ];
 
