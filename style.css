@@ -8,7 +8,7 @@
 
 html {
     min-height: 100%;
-    background: #0a1a2e; /* Dark blue gradient base */
+    background: #0a1a2e;
 }
 
 body {
@@ -26,7 +26,7 @@ body {
 }
 
 /* ========================================
-   BACKGROUND STARS (Dual Layer)
+   BACKGROUND STARS
    ======================================== */
 
 .stars {
@@ -56,13 +56,13 @@ body::before {
 }
 
 /* ========================================
-   TROVATINO LOGO (IMAGE) - SCROLLABLE WITH CONTENT
+   TROVATINO LOGO (SCROLLS WITH CONTENT)
    ======================================== */
 
 .logo-container {
-    position: relative; /* Logo scrolls with questions */
+    position: relative;
     text-align: center;
-    margin-bottom: 10px; /* Reduced from 120px — smaller gap between logo and Q1 */
+    margin-bottom: 40px; /* Small gap between logo and questions - works for all devices */
 }
 
 .logo-img {
@@ -71,7 +71,7 @@ body::before {
 }
 
 /* ========================================
-   SURVEY CONTAINER (Main Content)
+   SURVEY CONTAINER
    ======================================== */
 
 .survey-container {
@@ -84,7 +84,7 @@ body::before {
 
 .question-number {
     font-size: 24px;
-    color: #C5A66D; /* Gold - matching logo! */
+    color: #C5A66D;
     font-weight: bold;
     margin-bottom: 15px;
 }
@@ -97,13 +97,13 @@ body::before {
 }
 
 /* ========================================
-   SQUARE TEXTAREA (90s Calculator Style)
+   TEXTAREA (90s Calculator Style)
    ======================================== */
 
 .survey-answer {
     width: 100%;
     min-height: 100px;
-    border-radius: 0; /* Hard edges - no rounded corners! */
+    border-radius: 0;
     box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.8), inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 2px 0px rgba(0, 0, 0, 0.5);
     border: none;
     padding: 12px;
@@ -127,7 +127,7 @@ body::before {
 }
 
 /* ========================================
-   STEVE JOBS CALCULATOR-STYLE BUTTONS
+   BUTTONS (Calculator Style)
    ======================================== */
 
 .button-container {
@@ -165,7 +165,7 @@ body::before {
 }
 
 .btn-next {
-    background: #C5A66D; /* Gold to match TROVATINO logo */
+    background: #C5A66D; /* Gold */
     color: #ffffff;
     text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
 }
@@ -180,7 +180,7 @@ body::before {
 }
 
 .btn-next:hover {
-    background: #d4a873; /* Lighter gold on hover */
+    background: #d4a873;
 }
 
 .btn-back:active, .btn-next:active {
@@ -195,7 +195,7 @@ body::before {
 }
 
 /* ========================================
-   PROGRESS BAR (Optional)
+   PROGRESS BAR
    ======================================== */
 
 .progress-bar {
@@ -205,7 +205,7 @@ body::before {
     transform: translateX(-50%);
     width: calc(100% - 60px);
     height: 6px;
-    background: #2c4a6e; /* Dark blue */
+    background: #2c4a6e;
     border-radius: 3px;
     overflow: hidden;
 }
@@ -213,7 +213,7 @@ body::before {
 .progress-fill {
     height: 100%;
     width: 10%;
-    background: #C5A66D; /* Gold to match logo! */
+    background: #C5A66D;
     transition: width 0.3s ease;
 }
 
@@ -224,21 +224,21 @@ body::before {
 .footer {
     text-align: center;
     padding: 30px;
-    color: #9fa8c5; /* Lighter blue-grey for dark background */
+    color: #9fa8c5;
     font-size: 14px;
 }
 
 /* ========================================
-   MOBILE LAYOUT (RESPONSIVE DESIGN)
+   MOBILE RESPONSIVE (ALL DEVICE SIZES)
    ======================================== */
 
 @media (max-width: 768px) {
     .logo-img {
-        max-width: 200px; /* Smaller logo on mobile */
+        max-width: 200px; /* Smaller on mobile */
     }
     
     .logo-container {
-        margin-bottom: -200px; /* Slightly smaller gap on mobile */
+        margin-bottom: 35px; /* Consistent spacing for all devices - reduced from 40px */
     }
     
     .survey-container {
@@ -255,3 +255,18 @@ body::before {
         max-width: none;
     }
 }
+
+/* ========================================
+   SMALLER SCREENS (TABLETS & SMALL PHONES)
+   ======================================== */
+
+@media (max-width: 480px) {
+    .logo-img {
+        max-width: 160px; /* Even smaller on very small screens */
+    }
+    
+    .logo-container {
+        margin-bottom: 30px; /* Adjust for compact screens */
+    }
+}
+
