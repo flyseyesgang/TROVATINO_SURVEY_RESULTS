@@ -238,7 +238,7 @@ body::before {
     }
     
     .logo-container {
-        margin-bottom: 20px; /* Slightly smaller gap on mobile */
+        margin-bottom: 0px; /* Slightly smaller gap on mobile */
     }
     
     .survey-container {
