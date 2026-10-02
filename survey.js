@@ -13,7 +13,6 @@ const surveyQuestions = [
     { type: 'text', question: "What is one thing we do well?", placeholder: "Tell us what we're doing right!" }
 ];
 
-
 // ========================================
 // 4. FORM SUBMISSION SETUP
 // ========================================
@@ -22,7 +21,7 @@ let currentQuestion = 0;
 let isSubmitting = false;
 
 // ========================================
-// 2. NAVIGATION FUNCTIONS (UPGRADED)
+// 2. NAVIGATION FUNCTIONS (FIXED)
 // ========================================
 function loadQuestion() {
     const questionData = surveyQuestions[currentQuestion];
@@ -37,7 +36,7 @@ function loadQuestion() {
         questionContent.innerHTML = `
             <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
             <textarea 
-                name="answer" 
+                name="answer-${currentQuestion}" 
                 id="question-${currentQuestion}" 
                 class="survey-answer" 
                 placeholder="${questionData.placeholder}" 
@@ -83,7 +82,7 @@ function updateHiddenAnswer(value) {
     let answerValue = value.trim(); // For text inputs
     
     // Handle radio button values properly
-    if (!answerValue) {
+    if (!answerValue || answerValue === '') {
         const checkedRadio = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`);
         if (checkedRadio) {
             answerValue = checkedRadio.value;
@@ -113,19 +112,36 @@ function goBack() {
 
 function goNext() {
     // Check if answer is provided for current question
-    const textAnswer = document.querySelector('textarea')?.value;
-    const selectedAnswer = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`)?.value;
+    const textAnswer = document.querySelector(`textarea[name="answer-${currentQuestion}"]`)?.value;
+    const selectedAnswer = document.querySelector(`input[type="radio"]:checked`)?.value;
     
     if (currentQuestion === surveyQuestions.length - 1) {
         // Final question - prepare for submission!
         
         // Make sure final answer is saved to hidden field
-        updateHiddenAnswer(textAnswer || selectedAnswer);
+        let finalAnswer = '';
+        const finalTextarea = document.querySelector(`textarea[name="answer-${currentQuestion}"]`);
+        if (finalTextarea) {
+            finalAnswer = finalTextarea.value.trim();
+        } else {
+            const checkedRadio = document.querySelector('input[type="radio"]:checked');
+            if (checkedRadio) {
+                finalAnswer = checkedRadio.value;
+            }
+        }
         
-        // Get the final answer value
-        const finalInput = surveyForm.querySelector(`input[name="question-${surveyQuestions.length}"]`);
-        if (finalInput) {
-            finalInput.value = textAnswer || selectedAnswer;
+        // Save to hidden field
+        const inputName = `question-${currentQuestion}`;
+        let existingInput = surveyForm.querySelector(`input[name="${inputName}"]`);
+        
+        if (!existingInput) {
+            const newInput = document.createElement('input');
+            newInput.type = 'hidden';
+            newInput.name = inputName;
+            newInput.value = finalAnswer;
+            surveyForm.appendChild(newInput);
+        } else {
+            existingInput.value = finalAnswer;
         }
 
         // Show thank you message
@@ -139,20 +155,19 @@ function goNext() {
         btnNext.innerHTML = '<span>Submitting...</span>';
         btnNext.disabled = true;
         
-        // Submit the form to Formspree after brief delay
-        setTimeout(() => {
-            if (surveyForm) {
-                surveyForm.submit();
-                
-                // Optionally, you can redirect to a thank-you page
-                // window.location.href = 'https://flyseyesgang.github.io/TROVATINO_SURVEY_RESULTS/thank-you.html';
-            }
-        }, 1000);
+        // Submit the form to Formspree immediately (no timeout needed)
+        if (surveyForm) {
+            surveyForm.submit();
+            
+            // Reset after submission for next visitor
+            setTimeout(() => {
+                currentQuestion = 0;
+                loadQuestion(); // Load first question for next person
+            }, 1000);
+        }
 
     } else {
         // Regular navigation - check answer first
-        const selectedAnswer = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`)?.value;
-        
         if (!textAnswer && !selectedAnswer) {
             alert('Please provide an answer before continuing!');
             return;
