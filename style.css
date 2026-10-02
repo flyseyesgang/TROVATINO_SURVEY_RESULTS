@@ -2,111 +2,67 @@
    RESET AND PAGE
    ======================================== */
 
-/* ========================================
-   FIX: BUTTON INTERACTION & TEXTAREA
-   ======================================== */
-.survey-answer {
-    display: block; /* Ensures textarea is visible */
-    min-height: 100px;
-}
-
-.btn-back,
-.btn-next {
-    cursor: pointer; /* Make sure cursor shows pointer */
-    z-index: 5; /* Higher than any content below */
-    position: relative;
-}
-
-.btn-back:hover,
-.btn-next:hover {
-    transition: all 0.1s ease; /* Add smooth transition */
-}
-
 * {
-   box-sizing: border-box;
+    box-sizing: border-box;
 }
-
 
 html {
-   min-height: 100%;
-   background: #0a1a2e; /* Dark blue gradient base */
+    min-height: 100%;
+    background: #0a1a2e; /* Dark blue gradient base */
 }
-
 
 body {
-   min-height: 100vh;
-   margin: 0;
-   padding: 24px 16px;
-
-
-
-   background: linear-gradient(to bottom, #0d1f3e 0%, #0a1a2e 50%, #1c2a4a 100%);
-   color: #fff;
-   font-family: Georgia, serif;
-
-
-
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-
-
-
-   overflow-x: hidden;
-   overflow-y: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px 16px;
+    background: linear-gradient(to bottom, #0d1f3e 0%, #0a1a2e 50%, #1c2a4a 100%);
+    color: #fff;
+    font-family: Georgia, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
-
 
 /* ========================================
    BACKGROUND STARS (Dual Layer)
    ======================================== */
 
-
-/* HTML pixel stars - visible elements */
 .stars {
-   position: fixed;
-   inset: 0;
-   z-index: 0;
-   pointer-events: none;
-   overflow: hidden;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
 }
 
-
-.pixel-star,
-.small-star {
-   position: absolute;
-   color: #fff;
-   font-family: "Courier New", monospace;
-   line-height: 1;
+.pixel-star, .small-star {
+    position: absolute;
+    color: #fff;
+    font-family: "Courier New", monospace;
+    line-height: 1;
 }
 
-
-/* CSS background stars - subtle layer */
 body::before {
-   content: "";
-   position: fixed;
-   inset: 0;
-   z-index: 0;
-   pointer-events: none;
-
-
-
-   background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width='260' height='210' viewBox='0 0 260 210' shape-rendering='crispEdges'%3E%3Cg fill='white'%3E%3Crect x='18' y='24' width='2' height='2'/%3E%3Crect x='83' y='12' width='1' height='1'/%3E%3Crect x='190' y='32' width='2' height='2'/%3E%3Crect x='235' y='83' width='1' height='1'/%3E%3Crect x='31' y='119' width='1' height='1'/%3E%3Crect x='108' y='88' width='2' height='2'/%3E%3Crect x='163' y='135' width='1' height='1'/%3E%3Crect x='219' y='172' width='2' height='2'/%3E%3Crect x='61' y='185' width='2' height='2'/%3E%3Crect x='130' y='195' width='1' height='1'/%3E%3Crect x='151' y='48' width='2' height='13'/%3E%3Crect x='145' y='54' width='14' height='2'/%3E%3Crect x='49' y='145' width='2' height='9'/%3E%3Crect x='45' y='149' width='10' height='2'/%3E%3Crect x='206' y='113' width='2' height='17'/%3E%3Crect x='198' y='120' width='18' height='2'/%3E%3C/g%3E%3C/svg%3E");
-   background-repeat: repeat;
-   background-size: 260px 210px;
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width='260' height='210' viewBox='0 0 260 210' shape-rendering='crispEdges'%3E%3Cg fill='white'%3E%3Crect x='18' y='24' width='2' height='2'/%3E%3Crect x='83' y='12' width='1' height='1'/%3E%3Crect x='190' y='32' width='2' height='2'/%3E%3Crect x='235' y='83' width='1' height='1'/%3E%3Crect x='31' y='119' width='1' height='1'/%3E%3Crect x='108' y='88' width='2' height='2'/%3E%3Crect x='163' y='135' width='1' height='1'/%3E%3Crect x='219' y='172' width='2' height='2'/%3E%3Crect x='61' y='185' width='2' height='2'/%3E%3Crect x='130' y='195' width='1' height='1'/%3E%3Crect x='151' y='48' width='2' height='13'/%3E%3Crect x='145' y='54' width='14' height='2'/%3E%3Crect x='49' y='145' width='2' height='9'/%3E%3Crect x='45' y='149' width='10' height='2'/%3E%3Crect x='206' y='113' width='2' height='17'/%3E%3Crect x='198' y='120' width='18' height='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 260px 210px;
 }
-
-
-
 
 /* ========================================
-   TROVATINO LOGO (IMAGE) - REPLACED!
+   TROVATINO LOGO (IMAGE) - SCROLLABLE WITH CONTENT
    ======================================== */
 
 .logo-container {
-    position: relative;      /* CHANGED FROM: fixed */
+    position: relative; /* Logo scrolls with questions */
     text-align: center;
-    margin-bottom: 10px;     /* Space above questions */
+    margin-bottom: 80px; /* Reduced from 120px — smaller gap between logo and Q1 */
 }
 
 .logo-img {
@@ -114,355 +70,188 @@ body::before {
     height: auto;
 }
 
-/* Wrap survey container to prevent overlap */
+/* ========================================
+   SURVEY CONTAINER (Main Content)
+   ======================================== */
+
 .survey-container {
     max-width: 600px;
-    margin-top: 180px;       /* Space for fixed logo */
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
     text-align: center;
 }
 
-/* Main content area scrolls normally */
-main {
-    padding-bottom: 200px;   /* Space for progress bar/footer */
-}
-
-/* Ensure scrolling works properly */
-body,
-html {
-    overflow-x: hidden;      /* No horizontal scroll */
-    overflow-y: auto;        /* Vertical scroll enabled */
-}
-
-
-
-/* ========================================
-   SURVEY CONTAINER (Centered)
-   ======================================== */
-.survey-container {
-   max-width: 600px;
-   margin-top: 300px; /* Adjusted for logo instead of running text */
-   margin-left: auto;
-   margin-right: auto;
-   padding: 30px;
-   text-align: center;
-}
-
-
 .question-number {
-   font-size: 24px;
-   color: #C5A66D; /* Gold - matching logo! */
-   font-weight: bold;
-   margin-bottom: 15px;
+    font-size: 24px;
+    color: #C5A66D; /* Gold - matching logo! */
+    font-weight: bold;
+    margin-bottom: 15px;
 }
-
 
 .question-text {
-   font-size: 20px;
-   color: #ffffff;
-   margin-bottom: 30px;
-   text-align: left;
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-align: left;
 }
-
-
 
 /* ========================================
    SQUARE TEXTAREA (90s Calculator Style)
    ======================================== */
+
 .survey-answer {
-   width: 100%;
-   min-height: 100px;
-   
-   /* HARD EDGES - No rounded corners! */
-   border-radius: 0; 
-   
-   /* Retro bevel effect for depth */
-   box-shadow:
-      /* Top highlight (light grey) */
-      inset 0px 1px 0px rgba(255, 255, 255, 0.8),
-      
-      /* Inner shadows for "pressed" feel */
-      inset 0px 0px 3px rgba(0, 0, 0, 0.4),
-      
-      /* Drop shadow to lift off page */
-      0px 2px 0px rgba(0, 0, 0, 0.5);
-   
-   border: none;
-   padding: 12px;
-   
-   /* Light grey background for retro plastic feel */
-   background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%);
-   
-   color: #333;
-   font-family: "Courier New", monospace; 
-   font-size: 16px;
-   line-height: 1.4;
-   
-   margin-bottom: 20px;
+    width: 100%;
+    min-height: 100px;
+    border-radius: 0; /* Hard edges - no rounded corners! */
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.8), inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 2px 0px rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 12px;
+    background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%);
+    color: #333;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 20px;
 }
 
 .survey-answer:focus {
-   outline: none;
-   
-   /* Same box-shadow as buttons for consistency */
-   box-shadow:
-      inset 0px 1px 0px rgba(255, 255, 255, 0.9),
-      inset 0px 0px 3px rgba(0, 0, 0, 0.4),
-      0px 2px 0px rgba(0, 0, 0, 0.5);
-   
-   /* Your purple glow on focus */
-   border: 2px solid #8b4791;
+    outline: none;
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.9), inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 2px 0px rgba(0, 0, 0, 0.5);
+    border: 2px solid #8b4791;
 }
 
 .survey-answer::placeholder {
-   color: #aaa;
-   font-style: italic;
+    color: #aaa;
+    font-style: italic;
 }
 
-
-
 /* ========================================
-   STEVE JOBS CALCULATOR-STYLE BUTTONS (UPDATED)
+   STEVE JOBS CALCULATOR-STYLE BUTTONS
    ======================================== */
-
 
 .button-container {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   gap: 24px;
-   margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-top: 40px;
 }
 
-
-
-/* Complete button surface - The "Calculator" Look */
-.btn-back,
-.btn-next {
-   position: relative;
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-
-
-
-   min-width: 150px;
-   height: 54px;
-   padding: 0 24px;
-
-
-
-   color: #ffffff;
-
-
-
-   /* Hard edges, no border-radius for that retro feel */
-   border-radius: 2px; 
-
-
-   font-family: "Tahoma", sans-serif; 
-   font-size: 16px;
-   font-weight: bold;
-   letter-spacing: 1px;
-   text-transform: uppercase;
-
-
-
-   cursor: pointer;
-
-
-
-   transform: translateY(0);
-   
-   /* 
-      The "Metallic" Look using inset shadows.
-      This creates the hard bevel effect seen on old hardware.
-   */
-   box-shadow:
-      /* Top Highlight (Light Grey) */
-      0px 1px 0px rgba(255, 255, 255, 0.6), 
-      
-      /* Inner Bevels for Depth */
-      inset 1px 1px 0px rgba(255, 255, 255, 0.8),
-      inset -1px -1px 0px rgba(0, 0, 0, 0.6),
-
-
-
-      /* Drop Shadow to lift off the purple background */
-      0px 3px 0px rgba(0, 0, 0, 0.8);
+.btn-back, .btn-next {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    height: 54px;
+    padding: 0 24px;
+    color: #ffffff;
+    border-radius: 2px;
+    font-family: "Tahoma", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transform: translateY(0);
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6), inset 1px 1px 0px rgba(255, 255, 255, 0.8), inset -1px -1px 0px rgba(0, 0, 0, 0.6), 0px 3px 0px rgba(0, 0, 0, 0.8);
 }
 
-
-
-/* Back button colour - Red/Pink */
 .btn-back {
-   /* Pure solid color is often better for "plastic" looks than gradients */
-   background: #d94d5a; 
-   color: #ffffff;
-   
-   text-shadow: 1px 1px 0px rgba(0,0,0,0.5); 
+    background: #d94d5a;
+    color: #ffffff;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
 }
 
-
-
-/* Next button colour - Gold (to match logo!) */
 .btn-next {
-   background: #C5A66D; /* Gold to match TROVATINO logo */
-   color: #ffffff;
-   
-   text-shadow: 1px 1px 0px rgba(0,0,0,0.5); 
+    background: #C5A66D; /* Gold to match TROVATINO logo */
+    color: #ffffff;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
 }
 
-
-
-/* Hover - Lifts slightly up to reveal the lighter bevel */
-.btn-back:hover,
-.btn-next:hover {
-   transform: translateY(-1px); 
-   box-shadow:
-      0px 2px 0px rgba(0, 0, 0, 0.8), 
-      inset 1px 1px 0px rgba(255, 255, 255, 0.9), 
-      inset -1px -1px 0px rgba(0, 0, 0, 0.7); 
+.btn-back:hover, .btn-next:hover {
+    transform: translateY(-1px);
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.8), inset 1px 1px 0px rgba(255, 255, 255, 0.9), inset -1px -1px 0px rgba(0, 0, 0, 0.7);
 }
 
-
-
-/* Active (Pressed) - Pushes down to reveal the darker bevel */
-.btn-back:active,
-.btn-next:active {
-   transform: translateY(4px); 
-   box-shadow:
-      0px 0px 0px transparent, 
-      inset 2px 2px 5px rgba(0, 0, 0, 0.6), 
-      inset -2px -2px 5px rgba(255, 255, 255, 0.4);
-}
-
-
-
-/* The span is now only text */
-.btn-back span,
-.btn-next span {
-   display: inline;
-   padding: 0;
-   margin: 0;
-
-
-   background: transparent;
-   color: inherit;
-
-
-   font: inherit;
-   letter-spacing: inherit;
-   text-transform: inherit;
-
-
-   transform: none;
-   filter: none;
-   pointer-events: none;
-}
-
-
-
-/* Subtle hover without moving the button */
-.btn-back:hover,
-.btn-next:hover {
-   /* Filter brightness is okay, but shadow change is better for 90s feel */
-   background: #e85b67; 
+.btn-back:hover {
+    background: #e85b67;
 }
 
 .btn-next:hover {
-   background: #d4a873; /* Lighter gold on hover */
+    background: #d4a873; /* Lighter gold on hover */
 }
 
-
-
-/* Keyboard accessibility */
-.btn-back:focus-visible,
-.btn-next:focus-visible {
-   outline: 2px solid #ffffff;
-   outline-offset: -2px; 
-   z-index: 10;
+.btn-back:active, .btn-next:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 0px transparent, inset 2px 2px 5px rgba(0, 0, 0, 0.6), inset -2px -2px 5px rgba(255, 255, 255, 0.4);
 }
 
-
-
-/* ========================================
-   MOBILE BUTTON LAYOUT
-   ======================================== */
-
-
-@media (max-width: 768px) {
-   .button-container {
-      flex-direction: column;
-      gap: 20px;
-   }
-
-
-   .btn-back,
-   .btn-next {
-      width: 100%;
-      max-width: 260px;
-   }
+.btn-back:focus-visible, .btn-next:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -2px;
+    z-index: 10;
 }
-
-
-
-/* ========================================
-   FOOTER
-   ======================================== */
-.footer {
-   text-align: center;
-   padding: 30px;
-   color: #9fa8c5; /* Lighter blue-grey for dark background */
-   font-size: 14px;
-}
-
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-@media (max-width: 768px) {
-   
-   .logo-img {
-      max-width: 220px; /* Smaller on mobile */
-   }
-   
-   .survey-container {
-      margin-top: 240px; 
-      padding: 20px;
-   }
-   
-   .button-container {
-      flex-direction: column;
-      gap: 15px;
-   }
-   
-   .btn-back, .btn-next {
-      width: 100%;
-   }
-}
-
 
 /* ========================================
    PROGRESS BAR (Optional)
    ======================================== */
+
 .progress-bar {
-   position: fixed;
-   bottom: 30px;
-   left: 50%;
-   transform: translateX(-50%);
-   width: calc(100% - 60px);
-   height: 6px;
-   background: #2c4a6e; /* Dark blue */
-   border-radius: 3px;
-   overflow: hidden;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    height: 6px;
+    background: #2c4a6e; /* Dark blue */
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .progress-fill {
-   height: 100%;
-   width: 10%; 
-   background: #C5A66D; /* Gold to match logo! */
-   transition: width 0.3s ease;
+    height: 100%;
+    width: 10%;
+    background: #C5A66D; /* Gold to match logo! */
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #9fa8c5; /* Lighter blue-grey for dark background */
+    font-size: 14px;
+}
+
+/* ========================================
+   MOBILE LAYOUT (RESPONSIVE DESIGN)
+   ======================================== */
+
+@media (max-width: 768px) {
+    .logo-img {
+        max-width: 200px; /* Smaller logo on mobile */
+    }
+    
+    .logo-container {
+        margin-bottom: 60px; /* Slightly smaller gap on mobile */
+    }
+    
+    .survey-container {
+        padding: 20px;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn-back, .btn-next {
+        width: 100%;
+        max-width: none;
+    }
 }
