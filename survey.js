@@ -2,18 +2,17 @@
 // 10-QUESTION SURVEY DATA
 // ========================================
 const surveyQuestions = [
-    {
-        type: 'text',
-        question: "What is your favourite gelato flavour?",
-        placeholder: "Type your answer here..."
-    },
-    {
-        type: 'radio',
-        question: "How often do you visit our store?",
-        options: ["Never", "Once a month", "Weekly", "Daily"]
-    },
-    // ... rest of your questions (keep existing)
+    { type: 'text', question: "What is your favourite gelato flavour?", placeholder: "Type your answer here..." },
+    { type: 'radio', question: "How often do you visit our store?", options: ["Never", "Once a month", "Weekly", "Daily"] },
+    { type: 'text', question: "What time of day do you prefer to visit us?", placeholder: "e.g., Morning / Afternoon / Evening" },
+    { type: 'radio', question: "Which payment method do you prefer?", options: ["Cash", "Card", "Mobile Payment"] },
+    { type: 'text', question: "What would you change about our store?", placeholder: "Share your honest feedback..." },
+    { type: 'radio', question: "How would you rate our staff?", options: ["Excellent", "Good", "Average", "Poor"] },
+    { type: 'text', question: "What is your age group?", placeholder: "e.g., 18-25, 26-35, etc." },
+    { type: 'radio', question: "How did you hear about us?", options: ["Social Media", "Friend/Family", "Advertisement", "Other"] },
+    { type: 'text', question: "What is one thing we do well?", placeholder: "Tell us what we're doing right!" }
 ];
+
 
 // ========================================
 // 4. FORM SUBMISSION SETUP
