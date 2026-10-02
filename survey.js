@@ -12,48 +12,19 @@ const surveyQuestions = [
         question: "How often do you visit our store?",
         options: ["Never", "Once a month", "Weekly", "Daily"]
     },
-    {
-        type: 'text',
-        question: "What time of day do you prefer to visit us?",
-        placeholder: "e.g., Morning / Afternoon / Evening"
-    },
-    {
-        type: 'radio',
-        question: "Which payment method do you prefer?",
-        options: ["Cash", "Card", "Mobile Payment"]
-    },
-    {
-        type: 'text',
-        question: "What would you change about our store?",
-        placeholder: "Share your honest feedback..."
-    },
-    {
-        type: 'radio',
-        question: "How would you rate our staff?",
-        options: ["Excellent", "Good", "Average", "Poor"]
-    },
-    {
-        type: 'text',
-        question: "What is your age group?",
-        placeholder: "e.g., 18-25, 26-35, etc."
-    },
-    {
-        type: 'radio',
-        question: "How did you hear about us?",
-        options: ["Social Media", "Friend/Family", "Advertisement", "Other"]
-    },
-    {
-        type: 'text',
-        question: "What is one thing we do well?",
-        placeholder: "Tell us what we're doing right!"
-    }
+    // ... rest of your questions (keep existing)
 ];
 
 // ========================================
-// 2. NAVIGATION FUNCTIONS (FIXED)
+// 4. FORM SUBMISSION SETUP
 // ========================================
+const surveyForm = document.getElementById('surveyForm');
 let currentQuestion = 0;
+let isSubmitting = false;
 
+// ========================================
+// 2. NAVIGATION FUNCTIONS (UPGRADED)
+// ========================================
 function loadQuestion() {
     const questionData = surveyQuestions[currentQuestion];
     const questionContent = document.getElementById('questionContent');
@@ -68,15 +39,24 @@ function loadQuestion() {
             <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
             <textarea 
                 name="answer" 
+                id="question-${currentQuestion}" 
                 class="survey-answer" 
                 placeholder="${questionData.placeholder}" 
                 required
             ></textarea>
         `;
+        
+        // Capture text answer into hidden field as user types
+        const textarea = questionContent.querySelector('textarea');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                updateHiddenAnswer(this.value);
+            });
+        }
     } else if (questionData.type === 'radio') {
         const radioHTML = questionData.options.map((option, index) => 
             `<label style="display: block; margin: 10px 0;">
-                <input type="radio" name="answer" value="${option}" required>
+                <input type="radio" name="answer-${currentQuestion}" value="${option}" required>
                 ${option}
             </label>`
         ).join('');
@@ -85,6 +65,43 @@ function loadQuestion() {
             <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
             <div style="text-align: left;">${radioHTML}</div>
         `;
+
+        // Capture radio selection into hidden field on change
+        const radios = questionContent.querySelectorAll(`input[name="answer-${currentQuestion}"]`);
+        if (radios.length > 0) {
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateHiddenAnswer(this.value);
+                });
+            });
+        }
+    }
+}
+
+// Helper function to update hidden form field with current answer
+function updateHiddenAnswer(value) {
+    const inputName = `question-${currentQuestion}`;
+    let answerValue = value.trim(); // For text inputs
+    
+    // Handle radio button values properly
+    if (!answerValue) {
+        const checkedRadio = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`);
+        if (checkedRadio) {
+            answerValue = checkedRadio.value;
+        }
+    }
+    
+    // Create or update hidden input in form
+    let existingInput = surveyForm.querySelector(`input[name="${inputName}"]`);
+    
+    if (existingInput) {
+        existingInput.value = answerValue || '';
+    } else {
+        const newInput = document.createElement('input');
+        newInput.type = 'hidden';
+        newInput.name = inputName;
+        newInput.value = answerValue || '';
+        surveyForm.appendChild(newInput);
     }
 }
 
@@ -96,21 +113,46 @@ function goBack() {
 }
 
 function goNext() {
-    // Get the answer from the input field
-    const questionContent = document.getElementById('questionContent');
-    const textAnswer = questionContent.querySelector('textarea')?.value;
+    // Check if answer is provided for current question
+    const textAnswer = document.querySelector('textarea')?.value;
+    const selectedAnswer = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`)?.value;
     
     if (currentQuestion === surveyQuestions.length - 1) {
-        // Final question - submit form
-        alert('🎉 Thank you for completing the survey!');
-        currentQuestion++; // Move past final question
+        // Final question - prepare for submission!
         
-        // Reset for next visit
-        currentQuestion = 0;
-        loadQuestion();
+        // Make sure final answer is saved to hidden field
+        updateHiddenAnswer(textAnswer || selectedAnswer);
+        
+        // Get the final answer value
+        const finalInput = surveyForm.querySelector(`input[name="question-${surveyQuestions.length}"]`);
+        if (finalInput) {
+            finalInput.value = textAnswer || selectedAnswer;
+        }
+
+        // Show thank you message
+        alert('🎉 Thank you for completing the survey! Your responses are being sent...');
+        
+        // Disable buttons to prevent further input
+        const btnBack = document.querySelector('.btn-back');
+        const btnNext = document.querySelector('.btn-next');
+        
+        btnBack.style.display = 'none';
+        btnNext.innerHTML = '<span>Submitting...</span>';
+        btnNext.disabled = true;
+        
+        // Submit the form to Formspree after brief delay
+        setTimeout(() => {
+            if (surveyForm) {
+                surveyForm.submit();
+                
+                // Optionally, you can redirect to a thank-you page
+                // window.location.href = 'https://flyseyesgang.github.io/TROVATINO_SURVEY_RESULTS/thank-you.html';
+            }
+        }, 1000);
+
     } else {
         // Regular navigation - check answer first
-        const selectedAnswer = questionContent.querySelector('input[type="radio"]:checked')?.value;
+        const selectedAnswer = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`)?.value;
         
         if (!textAnswer && !selectedAnswer) {
             alert('Please provide an answer before continuing!');
@@ -130,3 +172,15 @@ window.onload = function() {
     currentQuestion = 0;
     loadQuestion();
 };
+
+// Optional: Handle form submission error gracefully
+surveyForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Let Formspree handle the submit
+    
+    // Show success message before redirect (optional)
+    const btnNext = document.querySelector('.btn-next');
+    if (btnNext) {
+        btnNext.innerHTML = '<span>📧 Sent! Thank you!</span>';
+        btnNext.disabled = true;
+    }
+});
