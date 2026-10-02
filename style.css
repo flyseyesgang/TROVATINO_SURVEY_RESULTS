@@ -106,7 +106,7 @@ body::before {
 .logo-container {
     position: relative;      /* CHANGED FROM: fixed */
     text-align: center;
-    margin-bottom: 20px;     /* Space above questions */
+    margin-bottom: 10px;     /* Space above questions */
 }
 
 .logo-img {
