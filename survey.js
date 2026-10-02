@@ -10,86 +10,91 @@ const surveyQuestions = [
     { type: 'radio', question: "How would you rate our staff?", options: ["Excellent", "Good", "Average", "Poor"] },
     { type: 'text', question: "What is your age group?", placeholder: "e.g., 18-25, 26-35, etc." },
     { type: 'radio', question: "How did you hear about us?", options: ["Social Media", "Friend/Family", "Advertisement", "Other"] },
-    { type: 'text', question: "What is one thing we do well?", placeholder: "Tell us what we're doing right!" }
-    { type: 'radio', question: "Hi Amelia, I wrote this from my bedroom:)", options: ["Hi Vince", "Select Hi Vince"] },
+    { type: 'text', question: "What is one thing we do well?", placeholder: "Tell us what we're doing right!" },
+    // 👇 NEW 10TH QUESTION ADDED HERE:
+    { type: 'radio', question: "Hi Amelia, I wrote this from my bedroom :)", options: ["Hi Vince", "Select Hi Vince"] }
 ];
 
 // ========================================
-// 4. FORM SUBMISSION SETUP
+// FORM & STATE
 // ========================================
 const surveyForm = document.getElementById('surveyForm');
 let currentQuestion = 0;
-let isSubmitting = false;
+const totalQuestions = surveyQuestions.length; // Dynamically counts all questions
 
 // ========================================
-// 2. NAVIGATION FUNCTIONS (FIXED)
+// LOAD QUESTION (RENDERED EVERY TIME)
 // ========================================
 function loadQuestion() {
     const questionData = surveyQuestions[currentQuestion];
     const questionContent = document.getElementById('questionContent');
     
-    // Set progress bar
-    const progressPercentage = ((currentQuestion + 1) / surveyQuestions.length) * 100;
+    // Update progress bar
+    const progressPercentage = ((currentQuestion + 1) / totalQuestions) * 100;
     document.getElementById('progressFill').style.width = progressPercentage + '%';
     
-    // Render question based on type
+    // Render question header
+    questionContent.innerHTML = `
+        <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
+    `;
+
+    // Handle text input questions
     if (questionData.type === 'text') {
-        questionContent.innerHTML = `
-            <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
-            <textarea 
-                name="answer-${currentQuestion}" 
-                id="question-${currentQuestion}" 
-                class="survey-answer" 
-                placeholder="${questionData.placeholder}" 
-                required
-            ></textarea>
-        `;
+        const textarea = document.createElement('textarea');
+        textarea.name = `answer-${currentQuestion}`;
+        textarea.id = `question-${currentQuestion}`;
+        textarea.className = 'survey-answer';
+        textarea.placeholder = questionData.placeholder || '';
         
-        // Capture text answer into hidden field as user types
-        const textarea = questionContent.querySelector('textarea');
-        if (textarea) {
-            textarea.addEventListener('input', function() {
-                updateHiddenAnswer(this.value);
-            });
-        }
-    } else if (questionData.type === 'radio') {
-        const radioHTML = questionData.options.map((option, index) => 
+        // Add to page
+        questionContent.appendChild(textarea);
+
+        // Auto-save as user types (into hidden field)
+        textarea.addEventListener('input', function() {
+            updateHiddenAnswer(this.value, `answer-${currentQuestion}`);
+        });
+    } 
+    // Handle radio button questions
+    else if (questionData.type === 'radio') {
+        const radiosDiv = document.createElement('div');
+        radiosDiv.style.textAlign = 'left';
+
+        const questionHtml = questionData.options.map((option, index) => 
             `<label style="display: block; margin: 10px 0;">
                 <input type="radio" name="answer-${currentQuestion}" value="${option}" required>
                 ${option}
             </label>`
         ).join('');
-        
-        questionContent.innerHTML = `
-            <h2 class="question-number">${currentQuestion + 1}. ${questionData.question}</h2>
-            <div style="text-align: left;">${radioHTML}</div>
-        `;
 
-        // Capture radio selection into hidden field on change
-        const radios = questionContent.querySelectorAll(`input[name="answer-${currentQuestion}"]`);
-        if (radios.length > 0) {
-            radios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    updateHiddenAnswer(this.value);
-                });
+        const fragment = document.createRange().createContextualFragment(questionHtml);
+        radiosDiv.appendChild(fragment);
+        questionContent.appendChild(radiosDiv);
+
+        // Attach listener to all radios
+        radiosDiv.querySelectorAll(`input[name="answer-${currentQuestion}"]`).forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateHiddenAnswer(this.value, `answer-${currentQuestion}`);
             });
-        }
+        });
     }
 }
 
-// Helper function to update hidden form field with current answer
-function updateHiddenAnswer(value) {
+// Helper: Save answer to hidden form field
+function updateHiddenAnswer(value, fieldName) {
     const inputName = `question-${currentQuestion}`;
-    let answerValue = value.trim(); // For text inputs
     
-    // Handle radio button values properly
-    if (!answerValue || answerValue === '') {
-        const checkedRadio = document.querySelector(`input[name="answer-${currentQuestion}"]:checked`);
+    // Get value from textarea or radio button
+    let answerValue = '';
+    const textarea = document.querySelector(`textarea[name="${fieldName}"]`);
+    if (textarea) {
+        answerValue = textarea.value.trim();
+    } else {
+        const checkedRadio = document.querySelector(`input[type="radio"]:checked`);
         if (checkedRadio) {
             answerValue = checkedRadio.value;
         }
     }
-    
+
     // Create or update hidden input in form
     let existingInput = surveyForm.querySelector(`input[name="${inputName}"]`);
     
@@ -104,6 +109,9 @@ function updateHiddenAnswer(value) {
     }
 }
 
+// ========================================
+// NAVIGATION FUNCTIONS
+// ========================================
 function goBack() {
     if (currentQuestion > 0) {
         currentQuestion--;
@@ -113,42 +121,20 @@ function goBack() {
 
 function goNext() {
     // Check if answer is provided for current question
-    const textAnswer = document.querySelector(`textarea[name="answer-${currentQuestion}"]`)?.value;
+    const fieldName = `answer-${currentQuestion}`;
+    const textAnswer = document.querySelector(`textarea[name="${fieldName}"]`)?.value;
     const selectedAnswer = document.querySelector(`input[type="radio"]:checked`)?.value;
     
-    if (currentQuestion === surveyQuestions.length - 1) {
-        // Final question - prepare for submission!
+    if (currentQuestion === totalQuestions - 1) {
+        // Final question — save and submit!
         
         // Make sure final answer is saved to hidden field
-        let finalAnswer = '';
-        const finalTextarea = document.querySelector(`textarea[name="answer-${currentQuestion}"]`);
-        if (finalTextarea) {
-            finalAnswer = finalTextarea.value.trim();
-        } else {
-            const checkedRadio = document.querySelector('input[type="radio"]:checked');
-            if (checkedRadio) {
-                finalAnswer = checkedRadio.value;
-            }
-        }
-        
-        // Save to hidden field
-        const inputName = `question-${currentQuestion}`;
-        let existingInput = surveyForm.querySelector(`input[name="${inputName}"]`);
-        
-        if (!existingInput) {
-            const newInput = document.createElement('input');
-            newInput.type = 'hidden';
-            newInput.name = inputName;
-            newInput.value = finalAnswer;
-            surveyForm.appendChild(newInput);
-        } else {
-            existingInput.value = finalAnswer;
-        }
+        updateHiddenAnswer(textAnswer || selectedAnswer, fieldName);
 
         // Show thank you message
         alert('🎉 Thank you for completing the survey! Your responses are being sent...');
         
-        // Disable buttons to prevent further input
+        // Disable buttons
         const btnBack = document.querySelector('.btn-back');
         const btnNext = document.querySelector('.btn-next');
         
@@ -156,7 +142,7 @@ function goNext() {
         btnNext.innerHTML = '<span>Submitting...</span>';
         btnNext.disabled = true;
         
-        // Submit the form to Formspree immediately (no timeout needed)
+        // Submit the form to Formspree
         if (surveyForm) {
             surveyForm.submit();
             
@@ -168,7 +154,7 @@ function goNext() {
         }
 
     } else {
-        // Regular navigation - check answer first
+        // Regular navigation — check answer first
         if (!textAnswer && !selectedAnswer) {
             alert('Please provide an answer before continuing!');
             return;
@@ -180,19 +166,17 @@ function goNext() {
 }
 
 // ========================================
-// 3. INITIALIZATION
+// INITIALIZATION
 // ========================================
-// Load first question on page load
 window.onload = function() {
     currentQuestion = 0;
     loadQuestion();
 };
 
-// Optional: Handle form submission error gracefully
+// Handle form submission error gracefully
 surveyForm.addEventListener('submit', function(e) {
     e.preventDefault(); // Let Formspree handle the submit
     
-    // Show success message before redirect (optional)
     const btnNext = document.querySelector('.btn-next');
     if (btnNext) {
         btnNext.innerHTML = '<span>📧 Sent! Thank you!</span>';
